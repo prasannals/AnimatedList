@@ -1,0 +1,1 @@
+This is a framework which help's people visualize list based work. Do what you usually do with a list using the AnimatedList class that I've provided here. After all your work, you can call the animate method on it to get an Animation object. Call start on it to start a visualization of whatever you've done with your list so far.
