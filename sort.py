@@ -1,7 +1,19 @@
 from animated_list import AnimatedList
 import random
 
+"""
+Gives a demo on how to use the animated list.
+"""
+
+
 def quickSort(animList, low, high):
+    """
+    performs quicksort on the items in "animList" (which is an object of type AnimatedList)
+    :param animList:
+    :param low:
+    :param high:
+    :return:
+    """
     # low is the first element position. high is one more than the last element position
     if high - low <= 1:
         return
@@ -48,7 +60,6 @@ def swap(animList, posA, posB):
     animList.removeHighlight(posA)
     if posA != posB:
         animList.removeHighlight(posB)
-
 
 
 numbers = AnimatedList()
