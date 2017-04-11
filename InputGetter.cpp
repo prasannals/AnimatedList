@@ -45,7 +45,15 @@ char* FileParser::readFromFile(const char *filename){
 	return buf;
 }
 
-
+void InputParser::split(std::string str, char *delimiter, std::vector<std::string> &vec){
+	char *token = strtok((char*)str.c_str(), delimiter);
+	
+	while(token != NULL){
+		std::string s(token);
+		vec.push_back(s);
+		token = strtok(NULL, delimiter);
+	}
+}
 
 std::string FileParser::getInput(){
 	std::string allCommands(this->readFromFile(this->filename.c_str()));
