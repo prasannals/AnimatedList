@@ -25,7 +25,6 @@ protected:
 		int y_pos = y_centre - (height / Y_OFFSET);;
 		
 		renderText(x_pos, y_pos, FONT, text.c_str());
-		printf("drawing text\n");
 		glColor3f(1, 1,1);
 		
 		glFlush();
@@ -89,6 +88,11 @@ public:
 		this->x = x;
 		this->y = y;
 	}	
+	
+	void setSpan(int width, int height){
+		this->width = width;
+		this->height = height;
+	}
 };
 
 
@@ -119,10 +123,10 @@ BoxListElementView bView(100, 100, 100, 100, "122" ), bv2(250, 100, 100, 100, "2
 	bv3(400, 200, 100, 100, "333");
 
 void display(void){
-	printf("in display func\n");
 	bView.draw();	
-	
+	sleep(1);
 	bv3.draw();
+	sleep(1);
 	bv2.draw();
 	Color color;
 	color.r = 255;
