@@ -7,9 +7,9 @@
 
 class AbstractListElementView{
 protected:
-	int x, y, width, height;
+	int x, y, width, height, fps;
 	Color highlightColor;
-	float colorRatio;
+	float colorRatio, speed;
 	std::string text;
 
 	
@@ -30,6 +30,21 @@ protected:
 		glFlush();
 	}
 	
+	
+	void linSpace(float start, float end, int numDivisions, std::vector<float> &vec){
+		float slope = fabs(end - start) / (numDivisions -1);	
+		for(int i = 0; i < numDivisions; i++){
+			if(i == 0) {
+				vec.push_back(start);
+			} else if(i == numDivisions - 1) {
+				vec.push_back(end);
+			} else {
+				vec.push_back( start + (i * slope) );
+			}
+		}
+	}
+
+	
 private:	
 	void renderText(int w, int h, void *font, const char *string){
 		glRasterPos2f(w,h);
@@ -49,13 +64,61 @@ public:
 		this->height = height;
 		this->text = text;
 		
+		this->fps = 30;
+		this->speed = 1;
 		this->highlightColor.r = 50;
 		this->highlightColor.g = 180;
 		this->highlightColor.b = 80;
 		this->colorRatio = (1/255.0);
 	}
 
+	void popIn(){
+		int xCentre = x + (width /2);
+		int yCentre = y + (height /2);
 
+		float delayInSec = ((2.0/speed)/fps);
+		int delay = (int)(1000000 * delayInSec);
+		
+		
+
+		int minWidth = 10;
+		int minHeight = 10;
+		
+		int minX = xCentre - (minWidth /2);
+		int minY = yCentre - (minHeight/2);
+				
+		std::vector<float> xVec, yVec, wVec, hVec;
+		
+		linSpace(x, minX, fps, xVec);
+		linSpace(y, minY, fps, yVec);
+		linSpace(minWidth, width, fps, wVec);
+		linSpace(minHeight, height, fps, hVec);
+		
+
+
+		for(int i = 0; i < fps; i++){
+		//display frame and provide delay
+			x = xVec.at((fps-1) - i);
+			y = yVec.at((fps-1) - i);
+			height = hVec.at(i);
+			width = wVec.at(i);
+			
+			if( i != fps -1){
+				drawShape();
+			}else{
+				draw();
+			}
+			usleep(delay);
+		}
+	}
+	
+	void popOut(){
+
+	}
+	
+	void setSpeed(float speed){
+		this->speed = speed;
+	}
 
 	void draw(){
 		drawShape();
@@ -93,6 +156,18 @@ public:
 		this->width = width;
 		this->height = height;
 	}
+	
+	void clear(){
+		glColor3f(0,0,0);
+		glBegin(GL_POLYGON);
+			glVertex3f(x, y, 0);
+			glVertex3f(x + width, y, 0);
+			glVertex3f(x + width, y + height, 0);
+			glVertex3f(x, y + height, 0);
+		glEnd();
+		glFlush();
+		glColor3f(1,1,1);
+	}
 };
 
 
@@ -102,6 +177,7 @@ private:
 	
 protected:
 	void drawShape(){
+		clear();
 		glBegin(GL_POLYGON);
 			glVertex3f(x, y, 0);
 			glVertex3f(x + width, y, 0);
@@ -123,19 +199,13 @@ BoxListElementView bView(100, 100, 100, 100, "122" ), bv2(250, 100, 100, 100, "2
 	bv3(400, 200, 100, 100, "333");
 
 void display(void){
-	bView.draw();	
-	sleep(1);
-	bv3.draw();
-	sleep(1);
-	bv2.draw();
-	Color color;
-	color.r = 255;
-	color.g = 22;
-	color.b = 99;
-	bv2.highlight(color);
+	bView.popIn();	
 }
+
+
 
 int main(int argc, char **argv){
 	Open2D op(&argc, argv, 800, 600, "Animated List");
 	op.display(display);
+	
 }
