@@ -3,6 +3,9 @@
 
 #include<map>
 #include<iostream>
+#include<stdlib.h>
+#include<stdio.h>
+
 
 class AnimationTask{
 private:
@@ -16,5 +19,19 @@ public:
 };
 
 
+class InputParser{
+public:
+	virtual std::string getInput() = 0;
+};
+
+class FileParser: public InputParser{
+private:
+	std::string filename;
+	char* readFromFile(const char *filename);
+public:
+	FileParser(std::string filename);
+	
+	std::string getInput();
+};
 
 #endif
