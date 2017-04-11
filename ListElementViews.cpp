@@ -79,7 +79,7 @@ public:
 		float delayInSec = ((2.0/speed)/fps);
 		int delay = (int)(1000000 * delayInSec);
 		
-		
+		int originalX = x, originalY =y, originalHeight = height, originalWidth = width;
 
 		int minWidth = 10;
 		int minHeight = 10;
@@ -103,6 +103,7 @@ public:
 			height = hVec.at(i);
 			width = wVec.at(i);
 			
+			clear(originalX, originalY, originalWidth, originalHeight);
 			if( i != fps -1){
 				drawShape();
 			}else{
@@ -113,7 +114,45 @@ public:
 	}
 	
 	void popOut(){
+		int xCentre = x + (width /2);
+		int yCentre = y + (height /2);
 
+		float delayInSec = ((2.0/speed)/fps);
+		int delay = (int)(1000000 * delayInSec);
+		
+		int originalX = x, originalY =y, originalHeight = height, originalWidth = width;
+
+		int minWidth = 10;
+		int minHeight = 10;
+		
+		int minX = xCentre - (minWidth /2);
+		int minY = yCentre - (minHeight/2);
+				
+		std::vector<float> xVec, yVec, wVec, hVec;
+		
+		linSpace(x, minX, fps, xVec);
+		linSpace(y, minY, fps, yVec);
+		linSpace(minWidth, width, fps, wVec);
+		linSpace(minHeight, height, fps, hVec);
+		
+
+
+		for(int i = 0; i < fps; i++){
+		//display frame and provide delay
+			x = xVec.at(i);
+			y = yVec.at(i);
+			height = hVec.at((fps-1) - i);
+			width = wVec.at((fps-1) - i);
+			
+			clear(originalX, originalY, originalWidth, originalHeight);
+			drawShape();
+			usleep(delay);
+		}
+		clear(x, y, width, height);
+		x = originalX;
+		y = originalY;
+		width = originalWidth;
+		height = originalHeight;
 	}
 	
 	void setSpeed(float speed){
@@ -157,7 +196,8 @@ public:
 		this->height = height;
 	}
 	
-	void clear(){
+	void clear(int x, int y, int width, int height){
+	////////// NOTE : Take in and restore previous color in later versions ////////
 		glColor3f(0,0,0);
 		glBegin(GL_POLYGON);
 			glVertex3f(x, y, 0);
@@ -177,7 +217,6 @@ private:
 	
 protected:
 	void drawShape(){
-		clear();
 		glBegin(GL_POLYGON);
 			glVertex3f(x, y, 0);
 			glVertex3f(x + width, y, 0);
@@ -199,7 +238,8 @@ BoxListElementView bView(100, 100, 100, 100, "122" ), bv2(250, 100, 100, 100, "2
 	bv3(400, 200, 100, 100, "333");
 
 void display(void){
-	bView.popIn();	
+	bView.popIn();
+	bView.popOut();	
 }
 
 
