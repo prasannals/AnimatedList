@@ -8,16 +8,27 @@
 class AbstractListElementView{
 protected:
 	int x, y, width, height;
+	Color highlightColor;
+	float colorRatio;
+	std::string text;
+
 	
-	void drawText(){
-		//calculate the centre 
+	void drawText(Color color){	
+		glColor3f(colorRatio * color.r, colorRatio * color.g,
+					colorRatio * color.b);
+		
+		
 		int x_centre = x + (width/2);
 		int y_centre = y + (height/2);
 		
 		int x_pos = x_centre - (width / X_OFFSET);
 		int y_pos = y_centre - (height / Y_OFFSET);;
 		
-		renderText(x_pos, y_pos, FONT, "1");	
+		renderText(x_pos, y_pos, FONT, text.c_str());
+		printf("drawing text\n");
+		glColor3f(1, 1,1);
+		
+		glFlush();
 	}
 	
 private:	
@@ -28,17 +39,51 @@ private:
 			glutBitmapCharacter(font, (int)*c);
 		}
 	}	
-	
+
+	virtual void drawShape() = 0;	
 
 public:
-	AbstractListElementView(int x, int y, int width, int height){
+	AbstractListElementView(int x, int y, int width, int height, std::string text){
 		this->x = x;
 		this->y = y;
 		this->width = width;
 		this->height = height;
+		this->text = text;
+		
+		this->highlightColor.r = 50;
+		this->highlightColor.g = 180;
+		this->highlightColor.b = 80;
+		this->colorRatio = (1/255.0);
 	}
 
-	virtual void draw() = 0;
+
+
+	void draw(){
+		drawShape();
+		Color color;
+		color.r = 50;
+		color.g = 50;
+		color.b = 50;
+		drawText(color);
+	}
+	
+	void highlight(){
+		glColor3f(colorRatio * highlightColor.r, 
+			colorRatio * highlightColor.g, colorRatio * highlightColor.b);
+		draw();
+	}
+	
+	void highlight(Color color){
+		glColor3f(colorRatio * color.r, 
+			colorRatio * color.g, colorRatio * color.b);	
+		draw();
+	}
+	
+	void removeHighlight(){
+		glColor3f(1,1,1);
+		draw();
+	}
+	
 	
 	void setCoordinates(int x, int y){
 		this->x = x;
@@ -49,38 +94,44 @@ public:
 
 class BoxListElementView: public AbstractListElementView{
 private:
-
-public:
-	BoxListElementView(int x, int y, int width, int height)
-	: AbstractListElementView(x, y, width, height){
-		
-	}
 	
-	void draw(){
+	
+protected:
+	void drawShape(){
 		glBegin(GL_POLYGON);
 			glVertex3f(x, y, 0);
 			glVertex3f(x + width, y, 0);
 			glVertex3f(x + width, y + height, 0);
 			glVertex3f(x, y + height, 0);
 		glEnd();
-		float ratio = (1/255.0);
-		
-		glColor3f(ratio * 50, ratio * 50, ratio * 50);
-		drawText();
-		glColor3f(1,1,1);
 		glFlush();
 	}
+
+public:
+	BoxListElementView(int x, int y, int width, int height, std::string text)
+	: AbstractListElementView(x, y, width, height, text){
+		
+	}
+	
 };
 
-BoxListElementView bView(100, 100, 100, 100), bv2(100, 400, 100, 100);
+BoxListElementView bView(100, 100, 100, 100, "122" ), bv2(250, 100, 100, 100, "22"),
+	bv3(400, 200, 100, 100, "333");
 
 void display(void){
+	printf("in display func\n");
 	bView.draw();	
-	bv2.setCoordinates(500,400);
+	
+	bv3.draw();
 	bv2.draw();
+	Color color;
+	color.r = 255;
+	color.g = 22;
+	color.b = 99;
+	bv2.highlight(color);
 }
 
 int main(int argc, char **argv){
 	Open2D op(&argc, argv, 800, 600, "Animated List");
-	op.display(display);	
+	op.display(display);
 }
