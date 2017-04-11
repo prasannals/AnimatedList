@@ -5,7 +5,13 @@
 #include"CommonIncludes.h"
 #include"Open2D.h"
 
-class AbstractListElementView{
+class Drawable{
+public:
+	virtual void draw() = 0;
+};
+
+
+class AbstractListElementView: public Drawable{
 protected:
 	int x, y, width, height, fps;
 	Color highlightColor;
