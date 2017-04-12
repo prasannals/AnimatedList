@@ -1,0 +1,8 @@
+add 5
+add 4
+add 8
+set 0,2
+add 10
+delete 0
+highlight 0
+swap 0,1
