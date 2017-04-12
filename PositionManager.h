@@ -1,6 +1,9 @@
 #ifndef POSITION_MANAGER_H
 #define POSITION_MANAGER_H
 
+#include<vector>
+#include<iostream>
+
 class PositionManager{
 private:
 
@@ -20,16 +23,25 @@ public:
 	
 	void setY(int y);
 	
-	virtual vector<int> getCoordinates(int index) = 0;
+	virtual void getCoordinates(int index, std::vector<int> &vec) = 0;
 };
 
 class LinearPositionManager: public PositionManager{
 private:
 
+protected:
+	int borderLeft, borderRight, borderTop, borderBottom, verticalSpacing, horizontalSpacing;
+	
+	int unitWidth, unitHeight;
+	
+	int rowCapacity, columnCapacity, maxElements;
+	
+	void calculateCapacity();
+
 public:
 	LinearPositionManager(int x, int y, int width, int height, int numElements);
 	
-	vector<int> getCoordinates(int index);
-}
+	void getCoordinates(int index, std::vector<int> &vec);
+};
 
 #endif

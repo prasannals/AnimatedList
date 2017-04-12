@@ -4,6 +4,7 @@
 
 #include"CommonIncludes.h"
 #include"Open2D.h"
+#include"PositionManager.h"
 
 class Drawable{
 public:
@@ -240,12 +241,33 @@ public:
 	
 };
 
-BoxListElementView bView(100, 100, 100, 100, "122" ), bv2(250, 100, 100, 100, "22"),
-	bv3(400, 200, 100, 100, "333");
+BoxListElementView bView(100, 100, 100, 100, "122" );
+
+LinearPositionManager pManager(0,0,800,600,20);
+
+void printPosition(std::vector<int> &position){
+	std::cout << "X : " << position.at(0) << std::endl;
+	std::cout << "Y : " << position.at(1) << std::endl;
+	std::cout << "Width : " << position.at(2) << std::endl;
+	std::cout << "Height : " << position.at(3) << std::endl;
+}
 
 void display(void){
-	bView.popIn();
-	bView.popOut();	
+	std::vector<int> position;
+	
+	for(int i = 0; i < 20; i++){
+		pManager.getCoordinates(i, position);
+		
+		bView.setCoordinates(position.at(0), position.at(1));
+		bView.setSpan(position.at(2), position.at(3));
+		
+		//printPosition(position);	
+		position.clear();
+		
+		bView.draw();
+		usleep(1000000);
+	}
+	
 }
 
 
