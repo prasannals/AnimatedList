@@ -38,7 +38,7 @@ protected:
 	void split(std::string str, const char *delimiter, std::vector<std::string> &vec);
 public:
 	virtual std::string getInput() = 0;
-	std::vector<AnimationTask> getTasks();
+	void getTasks(std::vector<AnimationTask> &tasks);
 };
 
 class FileParser: public InputParser{
@@ -47,7 +47,7 @@ private:
 	char* readFromFile(const char *filename);
 public:
 	FileParser(std::string filename);
-	
+
 	std::string getInput();
 };
 
