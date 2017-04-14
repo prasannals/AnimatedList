@@ -32,6 +32,8 @@ int calcNumElements(std::vector<AnimationTask> &t){
 std::vector<BoxListElementView> views;
 
 void redrawViews(int index){
+	glClearColor(0,0,0, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
 	for(int i = index; i < views.size(); i++){
 		std::vector<int> pos;
 		pManager.getCoordinates(i, pos);
@@ -45,37 +47,53 @@ void redrawViews(int index){
 	}
 }
 
+bool displayed = false;
+
 void display(void){
-	for(AnimationTask &task: tasks){
-		int id = task.getId();
 
-		std::cout << "task id : " << id << std::endl;
+	if(!displayed){
 
-		if(id == ADD_ID){
-			std::cout << "Adding" << std::endl;
-			std::vector<int> pos;
-			pManager.getCoordinates(views.size(), pos);
-			BoxListElementView v(pos.at(0), pos.at(1), pos.at(2), pos.at(3), task.getExtra(ELEMENT_EXTRA));
-			v.popIn();
-			views.push_back(v);
-		}else if (id == DELETE_ID) {
-			std::string str = task.getExtra(INDEX_EXTRA);
-			int index = atoi(str.c_str());
-			std::cout << "Deleting " << index << std::endl;
-			views.at(index).popOut();
-			views.erase(views.begin() + index);
-			redrawViews(index);
-		}else if (id == SWAP_ID) {
-			std::cout << "swap\n";
-		}else if (id == SET_ID) {
-			std::cout << "set\n";
-		}else if (id == HIGHLIGHT_ID) {
-			std::cout << "highlight\n";
-			views.at(index).highlight();
-		}else{
-			std::cout << "Something isn't right in display func\n";
+		for(AnimationTask &task: tasks){
+			int id = task.getId();
+
+
+			if(id == ADD_ID){
+				std::cout << "Adding" << std::endl;
+				std::vector<int> pos;
+				pManager.getCoordinates(views.size(), pos);
+				BoxListElementView v(pos.at(0), pos.at(1), pos.at(2), pos.at(3), task.getExtra(ELEMENT_EXTRA));
+				v.popIn();
+				views.push_back(v);
+			}else if (id == DELETE_ID) {
+				std::string str = task.getExtra(INDEX_EXTRA);
+				int index = atoi(str.c_str());
+				std::cout << "Deleting " << index << std::endl;
+				views.at(index).popOut();
+				views.erase(views.begin() + index);
+				redrawViews(0);
+			}else if (id == SWAP_ID) {
+				std::cout << "swap\n";
+
+			}else if (id == SET_ID) {
+				std::cout << "set\n";
+				std::string str = task.getExtra(INDEX_EXTRA);
+				int index = atoi(str.c_str());
+
+				std::string eleStr = task.getExtra(ELEMENT_EXTRA);
+				views.at(index).setText(eleStr);
+				views.at(index).draw();
+			}else if (id == HIGHLIGHT_ID) {
+				std::string str = task.getExtra(INDEX_EXTRA);
+				int index = atoi(str.c_str());
+
+				std::cout << "highlight\n";
+				views.at(index).highlight();
+			}else{
+				std::cout << "Something isn't right in display func\n";
+			}
+
 		}
-
+		displayed = true;
 	}
 }
 

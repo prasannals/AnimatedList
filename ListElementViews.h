@@ -193,6 +193,10 @@ public:
 	}
 
 
+	void setText(std::string &text){
+		this->text  = text;
+	}
+
 	void setCoordinates(int x, int y){
 		this->x = x;
 		this->y = y;
