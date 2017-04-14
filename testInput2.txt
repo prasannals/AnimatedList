@@ -1,4 +1,7 @@
 add 3
 add 4
 add 5
-swap 0,2
+add 6
+highlight 2
+set 3, 100
+highlight 4
