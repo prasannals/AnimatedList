@@ -87,6 +87,7 @@ void display(void){
 				int index = atoi(str.c_str());
 
 				std::cout << "highlight\n";
+				std::cout << "index : " << index << std::endl;
 				views.at(index).highlight();
 			}else{
 				std::cout << "Something isn't right in display func\n";
