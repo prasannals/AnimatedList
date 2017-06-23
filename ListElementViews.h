@@ -18,6 +18,7 @@ protected:
 	Color highlightColor;
 	float colorRatio, speed;
 	std::string text;
+	bool highlighted;
 
 
 	void drawText(Color color){
@@ -76,6 +77,7 @@ public:
 		this->highlightColor.r = 50;
 		this->highlightColor.g = 180;
 		this->highlightColor.b = 80;
+		this->highlighted = false;
 		this->colorRatio = (1/255.0);
 	}
 
@@ -167,7 +169,12 @@ public:
 	}
 
 	void draw(){
+		if(highlighted){
+			glColor3f(colorRatio * highlightColor.r,
+					colorRatio * highlightColor.g, colorRatio * highlightColor.b);
+		}
 		drawShape();
+
 		Color color;
 		color.r = 50;
 		color.g = 50;
@@ -176,19 +183,20 @@ public:
 	}
 
 	void highlight(){
-		glColor3f(colorRatio * highlightColor.r,
-			colorRatio * highlightColor.g, colorRatio * highlightColor.b);
-		draw();
+		// glColor3f(colorRatio * highlightColor.r,
+		// 	colorRatio * highlightColor.g, colorRatio * highlightColor.b);
+		// draw();
+		this->highlight(highlightColor);
 	}
 
 	void highlight(Color color){
-		glColor3f(colorRatio * color.r,
-			colorRatio * color.g, colorRatio * color.b);
-		draw();
+		this->highlightColor = color;
+		this->highlighted = true;
 	}
 
 	void removeHighlight(){
 		glColor3f(1,1,1);
+		this->highlighted = false;
 		draw();
 	}
 

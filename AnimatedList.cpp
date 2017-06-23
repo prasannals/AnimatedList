@@ -89,6 +89,7 @@ void display(void){
 				std::cout << "highlight\n";
 				std::cout << "index : " << index << std::endl;
 				views.at(index).highlight();
+				views.at(index).draw();
 			}else{
 				std::cout << "Something isn't right in display func\n";
 			}
