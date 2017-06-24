@@ -215,7 +215,7 @@ public:
 		this->height = height;
 	}
 
-	void getPosition(std::vector<int> position){
+	void getPosition(std::vector<int> &position){
 		position.push_back(x);
 		position.push_back(y);
 		position.push_back(width);
