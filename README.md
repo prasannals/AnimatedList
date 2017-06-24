@@ -16,6 +16,7 @@ add **element**</br>
 delete **index**</br>
 highlight **index**</br>
 set **index**,**element**
+swap **index**,**index**
 
 Where **element** is any string and **index** is a positive integer represeting the index of some element in the list.
 
