@@ -1,5 +1,9 @@
 # Animated List
 
+![](https://media.giphy.com/media/4N99ISJvzWsOpAQlfq/giphy.gif)
+
+Full Demo - https://www.youtube.com/watch?v=OzzlP0dJIzQ
+
 ## Compilation
 ```
 g++ AnimatedList.cpp InputGetter.cpp PositionManager.cpp -lglut -lGL -lGLU -lGLEW -std=c++11
