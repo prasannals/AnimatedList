@@ -19,7 +19,7 @@ g++ AnimatedList.cpp InputGetter.cpp PositionManager.cpp -lglut -lGL -lGLU -lGLE
 add **element**</br>
 delete **index**</br>
 highlight **index**</br>
-set **index**,**element**
+set **index**,**element**</br>
 swap **index**,**index**
 
 Where **element** is any string and **index** is a positive integer represeting the index of some element in the list.
